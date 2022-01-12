@@ -1,6 +1,6 @@
 let cityName = "London";
 let apiKey = "e76b72821d51dc3558071ffa27cf4d8d";
-let weatherURL = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}`;
+let weatherURL = `https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&appid=${apiKey}`;
 
 console.log(weatherURL);
 
@@ -12,7 +12,7 @@ let getWeather = function () {
       return response.json();
     })
     .then(function (result) {
-      console.log(result)
+     extractData(result);
     });
 };
 
@@ -22,8 +22,11 @@ let k2c = function (k) {
 };
 
 let extractData = function (resultObj) {
-  console.log(resultObj.weather[0].main);
-  console.log(k2c(resultObj.main.temp));
-}
+  for (i = 0; i < resultObj.list.length; i++) {
+    console.log(
+      `Weather for ${resultObj.list[i].dt_txt}: ${resultObj.list[i].weather[0].main}`
+    );
+  }
+};
 
 getWeather();
