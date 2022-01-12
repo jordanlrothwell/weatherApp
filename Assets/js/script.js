@@ -4,8 +4,6 @@ let longitude = -0.1257;
 let apiKey = "e76b72821d51dc3558071ffa27cf4d8d";
 let weatherURL = `https://api.openweathermap.org/data/2.5/onecall?lat=${latitude}&lon=${longitude}&exclude=minutely,hourly,alerts&appid=${apiKey}`;
 
-console.log(weatherURL);
-
 let weatherInfo = {};
 
 let getWeather = function () {
@@ -43,4 +41,4 @@ let extractData = function (resultObj) {
   }
 };
 
-getWeather();
+// getWeather();
