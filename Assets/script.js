@@ -23,20 +23,24 @@ let k2c = function (k) {
   return (k - 273.15).toFixed(1);
 };
 
+// FUNCTION: converts unix timestamp to date object
 let unixToDate = function (unix) {
   return new Date(unix * 1000);
 };
 
+// FUNCTION: extracts relevant information from our fetch call
 let extractData = function (resultObj) {
-  for (i = 0; i < resultObj.daily.length; i++) {
+  for (i = 0; i < 5; i++) {
     console.log(
-      `Weather for ${unixToDate(resultObj.daily[i].dt)}: ${
-        resultObj.daily[i].weather[0].main
-      }`
+      `Date: ${unixToDate(resultObj.daily[i].dt)}\n
+      Weather: ${resultObj.daily[i].weather[0].main}\n
+      Temp: ${k2c(resultObj.daily[i].temp.day)}\n
+      UVI: ${resultObj.daily[i].uvi}\n
+      Humidity: ${resultObj.daily[i].humidity}\n
+      Wind Speed: ${resultObj.daily[i].wind_speed}\n
+      ---`
     );
   }
 };
 
 getWeather();
-
-console.log(unixToDate(1641988800));
