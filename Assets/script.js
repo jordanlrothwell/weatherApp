@@ -1,7 +1,9 @@
-const apiKey = "e76b72821d51dc3558071ffa27cf4d8d";
-const weatherURL = `api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}`;
+let cityName = "London";
+let apiKey = "e76b72821d51dc3558071ffa27cf4d8d";
+let weatherURL = `api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}`;
 
-let cityName;
+console.log(weatherURL)
+
 
 const getWeather = function () {
   fetch(weatherURL).then(function (response) {
