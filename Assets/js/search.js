@@ -1,9 +1,23 @@
-let cityName = "London";
-let latitude = 51.5085;
-let longitude = -0.1257;
+let searchInputVal = document.location.search.replace("?q=", "");
+console.log(searchInputVal);
+let latitude;
+let longitude;
 let openWeatherAPIKey = "e76b72821d51dc3558071ffa27cf4d8d";
-let geoCodingAPIKey = "AIzaSyDCVuPXdcJQCOe51mrPB2Sm8CrS2akVLoc";
+let positionStackAPIKey = "95146b7e1298435b4077c47321e25caa";
 let weatherURL = `https://api.openweathermap.org/data/2.5/onecall?lat=${latitude}&lon=${longitude}&exclude=minutely,hourly,alerts&appid=${openWeatherAPIKey}`;
+let coordinatesURL = `http://api.positionstack.com/v1/forward?access_key=${positionStackAPIKey}&query=${searchInputVal}`;
+
+let getCoordinates = function () {
+  fetch(coordinatesURL)
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (result) {
+      extractCoordinates(result);
+    });
+};
+
+console.log(coordinatesURL)
 
 let getWeather = function () {
   fetch(weatherURL)
@@ -11,7 +25,7 @@ let getWeather = function () {
       return response.json();
     })
     .then(function (result) {
-      extractData(result);
+      extractWeather(result);
     });
 };
 
@@ -26,7 +40,15 @@ let unixToDate = function (unix) {
 };
 
 // FUNCTION: extracts relevant information from our fetch call
-let extractData = function (resultObj) {
+let extractCoordinates = function (resultObj) {    
+    console.log(
+        `Latitude: ${resultObj.data[0].latitude}\n
+        Longitude: ${resultObj.data[0].longitude}`
+    )
+}
+
+// FUNCTION: extracts relevant information from our fetch call
+let extractWeather = function (resultObj) {
   for (i = 0; i < 5; i++) {
     console.log(
       `Date: ${unixToDate(resultObj.daily[i].dt)}\n
@@ -39,5 +61,7 @@ let extractData = function (resultObj) {
     );
   }
 };
+
+getCoordinates();
 
 // getWeather();
