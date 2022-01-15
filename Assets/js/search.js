@@ -8,6 +8,11 @@ let openWeatherAPIKey = "e76b72821d51dc3558071ffa27cf4d8d";
 let positionStackAPIKey = "95146b7e1298435b4077c47321e25caa";
 let weatherURL;
 let coordinatesURL = `http://api.positionstack.com/v1/forward?access_key=${positionStackAPIKey}&query=${searchInputVal}`;
+let weatherQueryHistoryArray = [];
+let currentQueryObject = {
+  queryLabel: "",
+  days: [[], [], [], [], [], []],
+};
 
 let getData = function () {
   fetch(coordinatesURL)
@@ -133,6 +138,26 @@ let displayWeather = function (resultObj) {
     card.appendChild(windsp);
     fiveDayContainer.appendChild(card);
   }
+  currentQueryObject.queryLabel = `${label}`;
+  for (i = 0; i < 6; i++) {
+    currentQueryObject.days[i].push(
+      unixToDate(resultObj.daily[i].dt),
+      resultObj.daily[i].weather[0].main,
+      k2c(resultObj.daily[i].temp.day),
+      resultObj.daily[i].uvi,
+      resultObj.daily[i].humidity,
+      resultObj.daily[i].wind_speed
+    );
+  }
+  console.log(currentQueryObject);
+  weatherQueryHistoryArray.push(currentQueryObject);
+  console.log(weatherQueryHistoryArray)
+  localStorage.setItem(
+    "weatherQueryHistory", //add function above to check which index current query is
+    JSON.stringify(weatherQueryHistoryArray)
+  );
 };
 
 getData();
+
+// console.log(JSON.parse(localStorage.getItem(1)))
