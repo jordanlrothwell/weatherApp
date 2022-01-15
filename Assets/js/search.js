@@ -1,3 +1,5 @@
+// TODO: fix display of dates
+
 let searchInputVal = document.location.search.replace("?q=", "");
 let latitude;
 let longitude;
@@ -37,7 +39,7 @@ let unixToDate = function (unix) {
   return new Date(unix * 1000);
 };
 
-// FUNCTION: gets coordinates for 
+// FUNCTION: gets coordinates for
 let extractCoordinates = function (resultObj) {
   latitude = resultObj.data[0].latitude;
   longitude = resultObj.data[0].longitude;
@@ -50,15 +52,18 @@ let extractCoordinates = function (resultObj) {
 let displayWeather = function (resultObj) {
   let mainContainer = document.getElementById("mainContainer");
 
-  console.log(label)
+  console.log(label);
 
   let cityLabel = document.createElement("h2");
-  cityLabel.classList.add("display-4", "text-primary")
+  cityLabel.classList.add("display-4", "text-primary");
   cityLabel.innerHTML = `${label}`;
 
   let date = document.createElement("h3");
   date.classList.add("blockquote");
   date.innerHTML = `Date: ${unixToDate(resultObj.daily[0].dt)}`;
+
+  let weather = document.createElement("p");
+  weather.innerHTML = `Weather: ${resultObj.daily[0].weather[0].main}`;
 
   let temp = document.createElement("p");
   temp.classList.add("text-dark");
@@ -76,8 +81,9 @@ let displayWeather = function (resultObj) {
   windsp.classList.add("text-dark");
   windsp.innerHTML = `Wind Speed: ${resultObj.daily[0].wind_speed}`;
 
-  mainContainer.appendChild(cityLabel)
+  mainContainer.appendChild(cityLabel);
   mainContainer.appendChild(date);
+  mainContainer.appendChild(weather);
   mainContainer.appendChild(temp);
   mainContainer.appendChild(UVI);
   mainContainer.appendChild(hum);
@@ -86,7 +92,7 @@ let displayWeather = function (resultObj) {
   let fiveDayHeading = document.getElementById("fiveDayHeading");
   let fiveDayTitle = document.createElement("h2");
   fiveDayTitle.classList.add("display-5", "text-primary");
-  fiveDayTitle.innerHTML = "5-day Forecast"
+  fiveDayTitle.innerHTML = "5-day Forecast";
 
   fiveDayHeading.appendChild(fiveDayTitle);
 
@@ -99,6 +105,9 @@ let displayWeather = function (resultObj) {
     let date = document.createElement("h3");
     date.classList.add("blockquote");
     date.innerHTML = `Date: ${unixToDate(resultObj.daily[i].dt)}`;
+
+    let weather = document.createElement("p");
+    weather.innerHTML = `Weather: ${resultObj.daily[i].weather[0].main}`;
 
     let temp = document.createElement("p");
     temp.classList.add("text-dark");
@@ -117,6 +126,7 @@ let displayWeather = function (resultObj) {
     windsp.innerHTML = `Wind Speed: ${resultObj.daily[i].wind_speed}`;
 
     card.appendChild(date);
+    card.appendChild(weather);
     card.appendChild(temp);
     card.appendChild(UVI);
     card.appendChild(hum);
