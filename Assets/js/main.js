@@ -4,7 +4,7 @@ let handleSearchFormSubmit = function (event) {
   event.preventDefault();
 
   let searchInputVal = document.querySelector("#search-input").value;
-  
+
   if (!searchInputVal) {
     console.error("You need to enter a value.");
     return;
@@ -13,7 +13,7 @@ let handleSearchFormSubmit = function (event) {
   let queryString = "./search-results.html?q=" + searchInputVal;
 
   location.assign(queryString);
-}
+};
 
 searchFormEl.addEventListener("submit", handleSearchFormSubmit);
 
@@ -38,6 +38,9 @@ let updateHistoryTable = function () {
   let tableBodyEl = document.getElementById("tableBody");
   for (i = 0; i < weatherQueryHistoryArray.length; i++) {
     let newTableRowEl = document.createElement("tr");
+    newTableRowEl.addEventListener("click", function () {
+      console.log("test");
+    });
     let tableRowIndexEl = document.createElement("th");
     tableRowIndexEl.setAttribute("scope", "row");
     tableRowIndexEl.innerHTML = `${i + 1}`;

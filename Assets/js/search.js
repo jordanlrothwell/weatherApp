@@ -9,6 +9,7 @@ let positionStackAPIKey = "95146b7e1298435b4077c47321e25caa";
 let weatherURL;
 let coordinatesURL = `http://api.positionstack.com/v1/forward?access_key=${positionStackAPIKey}&query=${searchInputVal}`;
 let weatherQueryHistoryArray;
+let selectedOption;
 
 let checkForHistory = function () {
   weatherQueryHistoryArray =
@@ -19,8 +20,16 @@ checkForHistory();
 
 let updateHistoryTable = function () {
   let tableBodyEl = document.getElementById("tableBody");
+
   for (i = 0; i < weatherQueryHistoryArray.length; i++) {
     let newTableRowEl = document.createElement("tr");
+    newTableRowEl.addEventListener("click", function (event) {
+      event.preventDefault();
+      let index = parseInt(this.textContent.charAt(0));
+      let searchInputVal = (weatherQueryHistoryArray[index - 1].queryLabel);
+      let queryString = "./search-results.html?q=" + searchInputVal;
+      location.assign(queryString);
+    }); 
     let tableRowIndexEl = document.createElement("th");
     tableRowIndexEl.setAttribute("scope", "row");
     tableRowIndexEl.innerHTML = `${i + 1}`;
@@ -84,8 +93,6 @@ let extractCoordinates = function (resultObj) {
 // FUNCTION: extracts relevant information from our fetch call
 let displayWeather = function (resultObj) {
   let mainContainer = document.getElementById("mainContainer");
-
-  console.log(label);
 
   let cityLabel = document.createElement("h2");
   cityLabel.classList.add("display-4", "text-primary");
@@ -176,13 +183,11 @@ let displayWeather = function (resultObj) {
       resultObj.daily[i].humidity,
       resultObj.daily[i].wind_speed
     );
-    console.log(currentQueryObject);
   }
   let priorQueries = [];
   for (i = 0; i < weatherQueryHistoryArray.length; i++) {
     priorQueries.push(weatherQueryHistoryArray[i].queryLabel);
   }
-  console.log(priorQueries);
   if (!priorQueries.includes(`${label}`)) {
     weatherQueryHistoryArray.push(currentQueryObject);
   }
