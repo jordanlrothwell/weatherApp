@@ -1,5 +1,3 @@
-// TODO: fix display of dates
-
 let searchInputVal = document.location.search.replace("?q=", "");
 let latitude;
 let longitude;
@@ -9,34 +7,71 @@ let positionStackAPIKey = "95146b7e1298435b4077c47321e25caa";
 let weatherURL;
 let coordinatesURL = `http://api.positionstack.com/v1/forward?access_key=${positionStackAPIKey}&query=${searchInputVal}`;
 let weatherQueryHistoryArray;
-let selectedOption;
 
 let checkForHistory = function () {
   weatherQueryHistoryArray =
     JSON.parse(localStorage.getItem("weatherQueryHistory")) ?? [];
 };
 
+let searchFormEl = document.querySelector("#search-form");
+
+let handleSearchFormSubmit = function (event) {
+  event.preventDefault();
+  let searchInputVal = document.querySelector("#search-input").value;
+  if (!searchInputVal) {
+    console.error("You need to enter a value.");
+    return;
+  }
+  let queryString = "./search-results.html?q=" + searchInputVal;
+  location.assign(queryString);
+};
+
+searchFormEl.addEventListener("submit", handleSearchFormSubmit);
+
 checkForHistory();
+
+let convertToIcon = function (str) {
+  if (str.includes("Clear")) {
+    return str.replace(
+      /Clear/gm,
+      '<img src="/Assets/icons/clear.svg" alt="Clear">'
+    );
+  } else if (str.includes("Rain")) {
+    return str.replace(
+      /Rain/gm,
+      '<img src="/Assets/icons/rain.svg" alt="Rain">'
+    );
+  } else if (str.includes("Snow")) {
+    return str.replace(
+      /Snow/gm,
+      '<img src="/Assets/icons/snow.svg" alt="Snow">'
+    );
+  } else if (str.includes("Clouds")) {
+    return str.replace(
+      /Clouds/gm,
+      '<img src="/Assets/icons/clouds.svg" alt="Clouds">'
+    );
+  }
+};
 
 let updateHistoryTable = function () {
   let tableBodyEl = document.getElementById("tableBody");
-
   for (i = 0; i < weatherQueryHistoryArray.length; i++) {
     let newTableRowEl = document.createElement("tr");
     newTableRowEl.addEventListener("click", function (event) {
       event.preventDefault();
       let index = parseInt(this.textContent.charAt(0));
-      let searchInputVal = (weatherQueryHistoryArray[index - 1].queryLabel);
+      let searchInputVal = weatherQueryHistoryArray[index - 1].queryLabel;
       let queryString = "./search-results.html?q=" + searchInputVal;
       location.assign(queryString);
-    }); 
+    });
     let tableRowIndexEl = document.createElement("th");
     tableRowIndexEl.setAttribute("scope", "row");
     tableRowIndexEl.innerHTML = `${i + 1}`;
     let locationEl = document.createElement("td");
     locationEl.innerHTML = weatherQueryHistoryArray[i].queryLabel;
     let weatherEl = document.createElement("td");
-    weatherEl.innerHTML = weatherQueryHistoryArray[i].days[0][1];
+    weatherEl.innerHTML = convertToIcon(weatherQueryHistoryArray[i].days[0][1]);
     newTableRowEl.appendChild(tableRowIndexEl);
     newTableRowEl.appendChild(locationEl);
     newTableRowEl.appendChild(weatherEl);
@@ -77,8 +112,8 @@ let k2c = function (k) {
 };
 
 // FUNCTION: converts unix timestamp to date object
-let unixToDate = function (unix) {
-  return new Date(unix * 1000);
+let unixToDate = function (value) {
+  return moment.unix(value).format("LL");
 };
 
 // FUNCTION: gets coordinates for
@@ -100,10 +135,10 @@ let displayWeather = function (resultObj) {
 
   let date = document.createElement("h3");
   date.classList.add("blockquote");
-  date.innerHTML = `Date: ${unixToDate(resultObj.daily[0].dt)}`;
+  date.innerHTML = `${unixToDate(resultObj.daily[0].dt)}`;
 
   let weather = document.createElement("p");
-  weather.innerHTML = `Weather: ${resultObj.daily[0].weather[0].main}`;
+  weather.innerHTML = `Weather: ${convertToIcon(resultObj.daily[0].weather[0].main)}`;
 
   let temp = document.createElement("p");
   temp.classList.add("text-dark");
@@ -144,10 +179,12 @@ let displayWeather = function (resultObj) {
 
     let date = document.createElement("h3");
     date.classList.add("blockquote");
-    date.innerHTML = `Date: ${unixToDate(resultObj.daily[i].dt)}`;
+    date.innerHTML = `${unixToDate(resultObj.daily[i].dt)}`;
 
     let weather = document.createElement("p");
-    weather.innerHTML = `Weather: ${resultObj.daily[i].weather[0].main}`;
+    weather.innerHTML = `Weather: ${convertToIcon(
+      resultObj.daily[i].weather[0].main
+    )}`;
 
     let temp = document.createElement("p");
     temp.classList.add("text-dark");
