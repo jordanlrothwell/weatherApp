@@ -1,3 +1,4 @@
+// declaring global variables
 let searchInputVal = document.location.search.replace("?q=", "");
 let latitude;
 let longitude;
@@ -8,6 +9,7 @@ let weatherURL;
 let coordinatesURL = `http://api.positionstack.com/v1/forward?access_key=${positionStackAPIKey}&query=${searchInputVal}`;
 let weatherQueryHistoryArray;
 
+// check if any existing searches
 let checkForHistory = function () {
   weatherQueryHistoryArray =
     JSON.parse(localStorage.getItem("weatherQueryHistory")) ?? [];
@@ -15,6 +17,7 @@ let checkForHistory = function () {
 
 checkForHistory();
 
+// event handler for search on results page
 let searchFormEl = document.querySelector("#search-form");
 
 let handleSearchFormSubmit = function (event) {
@@ -30,6 +33,7 @@ let handleSearchFormSubmit = function (event) {
 
 searchFormEl.addEventListener("submit", handleSearchFormSubmit);
 
+// FUNCTION: to convert weather descriptions to icons
 let convertToIcon = function (str) {
   if (str.includes("Clear")) {
     return str.replace(
@@ -54,6 +58,7 @@ let convertToIcon = function (str) {
   }
 };
 
+// displays results in the table of previous searches for user/creates links to trigger search on each item
 let updateHistoryTable = function () {
   let tableBodyEl = document.getElementById("tableBody");
   for (i = 0; i < weatherQueryHistoryArray.length; i++) {
@@ -82,11 +87,13 @@ let updateHistoryTable = function () {
 
 updateHistoryTable();
 
+// our current query object (to add to search history if new)
 let currentQueryObject = {
   queryLabel: "",
   days: [[], [], [], [], [], []],
 };
 
+// our base fetch function
 let getData = function () {
   fetch(coordinatesURL)
     .then(function (response) {
@@ -97,6 +104,7 @@ let getData = function () {
     });
 };
 
+// a secondary fetch function to wrap into the first
 let getWeather = function () {
   fetch(weatherURL)
     .then(function (response) {
@@ -126,6 +134,7 @@ let extractCoordinates = function (resultObj) {
   getWeather();
 };
 
+// smaller version of the function above which populates the table - this only populates with the result of the current search
 let updateSearch = function () {
   let tableBodyEl = document.getElementById("tableBody");
   let newTableRowEl = document.createElement("tr");
@@ -151,7 +160,7 @@ let updateSearch = function () {
 };
 
 
-// FUNCTION: extracts relevant information from our fetch call
+// FUNCTION: displays the information from our search to page
 let displayWeather = function (resultObj) {
   let mainContainer = document.getElementById("mainContainer");
 
@@ -264,4 +273,3 @@ let displayWeather = function (resultObj) {
 };
 
 getData();
-
