@@ -1,12 +1,12 @@
-## User Story
+# Weather Forcast
 
-```
-AS A traveler
-I WANT to see the weather outlook for multiple cities
-SO THAT I can plan a trip accordingly
-```
+## Description
 
-## Acceptance Criteria
+A simple weather application which allows users to display the current weather and five-day-forecast for any location, and saves their previous results.
+
+Check it out [here](https://jordanlrothwell.github.io/weatherApp/).
+
+## Features
 
 ```
 GIVEN a weather dashboard with form inputs
