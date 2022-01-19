@@ -16,3 +16,40 @@ let handleSearchFormSubmit = function (event) {
 }
 
 searchFormEl.addEventListener("submit", handleSearchFormSubmit);
+
+let searchInputVal = document.location.search.replace("?q=", "");
+let latitude;
+let longitude;
+let label;
+let openWeatherAPIKey = "e76b72821d51dc3558071ffa27cf4d8d";
+let positionStackAPIKey = "95146b7e1298435b4077c47321e25caa";
+let weatherURL;
+let coordinatesURL = `http://api.positionstack.com/v1/forward?access_key=${positionStackAPIKey}&query=${searchInputVal}`;
+let weatherQueryHistoryArray;
+
+let checkForHistory = function () {
+  weatherQueryHistoryArray =
+    JSON.parse(localStorage.getItem("weatherQueryHistory")) ?? [];
+};
+
+checkForHistory();
+
+let updateHistoryTable = function () {
+  let tableBodyEl = document.getElementById("tableBody");
+  for (i = 0; i < weatherQueryHistoryArray.length; i++) {
+    let newTableRowEl = document.createElement("tr");
+    let tableRowIndexEl = document.createElement("th");
+    tableRowIndexEl.setAttribute("scope", "row");
+    tableRowIndexEl.innerHTML = `${i + 1}`;
+    let locationEl = document.createElement("td");
+    locationEl.innerHTML = weatherQueryHistoryArray[i].queryLabel;
+    let weatherEl = document.createElement("td");
+    weatherEl.innerHTML = weatherQueryHistoryArray[i].days[0][1];
+    newTableRowEl.appendChild(tableRowIndexEl);
+    newTableRowEl.appendChild(locationEl);
+    newTableRowEl.appendChild(weatherEl);
+    tableBodyEl.appendChild(newTableRowEl);
+  }
+};
+
+updateHistoryTable();
