@@ -38,22 +38,22 @@ let convertToIcon = function (str) {
   if (str.includes("Clear")) {
     return str.replace(
       /Clear/gm,
-      '<img src="https://raw.githubusercontent.com/jordanlrothwell/weatherApp/f966a72cef256a22426ecff4f86beed79998f5b4/Assets/icons/clear.svg" alt="Clear">'
+      '<img src="Assets/icons/clear.svg" alt="Clear">'
     );
   } else if (str.includes("Rain")) {
     return str.replace(
       /Rain/gm,
-      '<img src="https://raw.githubusercontent.com/jordanlrothwell/weatherApp/f966a72cef256a22426ecff4f86beed79998f5b4/Assets/icons/rain.svg" alt="Rain">'
+      '<img src="Assets/icons/rain.svg" alt="Rain">'
     );
   } else if (str.includes("Snow")) {
     return str.replace(
       /Snow/gm,
-      '<img src="https://raw.githubusercontent.com/jordanlrothwell/weatherApp/f966a72cef256a22426ecff4f86beed79998f5b4/Assets/icons/snow.svg" alt="Snow">'
+      '<img src="Assets/icons/snow.svg" alt="Snow">'
     );
   } else if (str.includes("Clouds")) {
     return str.replace(
       /Clouds/gm,
-      '<img src="https://raw.githubusercontent.com/jordanlrothwell/weatherApp/f966a72cef256a22426ecff4f86beed79998f5b4/Assets/icons/clouds.svg" alt="Clouds">'
+      '<img src="Assets/icons/clouds.svg" alt="Clouds">'
     );
   }
 };

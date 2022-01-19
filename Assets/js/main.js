@@ -42,8 +42,13 @@ let updateHistoryTable = function () {
   let tableBodyEl = document.getElementById("tableBody");
   for (i = 0; i < weatherQueryHistoryArray.length; i++) {
     let newTableRowEl = document.createElement("tr");
-    newTableRowEl.addEventListener("click", function () {
-      console.log("test");
+    newTableRowEl.addEventListener("click", function (event) {
+      event.preventDefault();
+      let numbers = /\d*/g;
+      let index = parseInt(this.textContent.match(numbers));
+      let searchInputVal = weatherQueryHistoryArray[index - 1].queryLabel;
+      let queryString = "./search-results.html?q=" + searchInputVal;
+      location.assign(queryString);
     });
     let tableRowIndexEl = document.createElement("th");
     tableRowIndexEl.setAttribute("scope", "row");
