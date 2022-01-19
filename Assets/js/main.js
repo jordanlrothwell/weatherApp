@@ -1,3 +1,4 @@
+// event handler for user searches
 let searchFormEl = document.querySelector("#search-form");
 
 let handleSearchFormSubmit = function (event) {
@@ -17,6 +18,7 @@ let handleSearchFormSubmit = function (event) {
 
 searchFormEl.addEventListener("submit", handleSearchFormSubmit);
 
+// declaring some global variables
 let searchInputVal = document.location.search.replace("?q=", "");
 let latitude;
 let longitude;
@@ -27,6 +29,7 @@ let weatherURL;
 let coordinatesURL = `http://api.positionstack.com/v1/forward?access_key=${positionStackAPIKey}&query=${searchInputVal}`;
 let weatherQueryHistoryArray;
 
+// update the history on load
 let checkForHistory = function () {
   weatherQueryHistoryArray =
     JSON.parse(localStorage.getItem("weatherQueryHistory")) ?? [];
@@ -34,6 +37,7 @@ let checkForHistory = function () {
 
 checkForHistory();
 
+// display history to page on load
 let updateHistoryTable = function () {
   let tableBodyEl = document.getElementById("tableBody");
   for (i = 0; i < weatherQueryHistoryArray.length; i++) {
