@@ -18,6 +18,5 @@ Check it out [here](https://jordanlrothwell.github.io/weatherApp/).
 
 ## Future improvements
 
-1. Live github page;
-2. UV-index changes based on severity;
-3. Rotating history with maximum amount.
+1. UV-index changes based on severity;
+2. Rotating history with maximum amount.
