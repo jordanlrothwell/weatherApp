@@ -6,7 +6,7 @@ let label;
 let openWeatherAPIKey = "e76b72821d51dc3558071ffa27cf4d8d";
 let positionStackAPIKey = "95146b7e1298435b4077c47321e25caa";
 let weatherURL;
-let coordinatesURL = `http://api.positionstack.com/v1/forward?access_key=${positionStackAPIKey}&query=${searchInputVal}`;
+let coordinatesURL = `https://api.positionstack.com/v1/forward?access_key=${positionStackAPIKey}&query=${searchInputVal}`;
 let weatherQueryHistoryArray;
 
 // check if any existing searches
