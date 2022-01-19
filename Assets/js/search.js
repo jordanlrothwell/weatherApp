@@ -13,6 +13,8 @@ let checkForHistory = function () {
     JSON.parse(localStorage.getItem("weatherQueryHistory")) ?? [];
 };
 
+checkForHistory();
+
 let searchFormEl = document.querySelector("#search-form");
 
 let handleSearchFormSubmit = function (event) {
@@ -27,8 +29,6 @@ let handleSearchFormSubmit = function (event) {
 };
 
 searchFormEl.addEventListener("submit", handleSearchFormSubmit);
-
-checkForHistory();
 
 let convertToIcon = function (str) {
   if (str.includes("Clear")) {
@@ -60,7 +60,8 @@ let updateHistoryTable = function () {
     let newTableRowEl = document.createElement("tr");
     newTableRowEl.addEventListener("click", function (event) {
       event.preventDefault();
-      let index = parseInt(this.textContent.charAt(0));
+      let numbers = /\d*/g;
+      let index = parseInt(this.textContent.match(numbers));
       let searchInputVal = weatherQueryHistoryArray[index - 1].queryLabel;
       let queryString = "./search-results.html?q=" + searchInputVal;
       location.assign(queryString);
@@ -125,6 +126,31 @@ let extractCoordinates = function (resultObj) {
   getWeather();
 };
 
+let updateSearch = function () {
+  let tableBodyEl = document.getElementById("tableBody");
+  let newTableRowEl = document.createElement("tr");
+  newTableRowEl.addEventListener("click", function (event) {
+    let numbers = /\d*/g;
+    event.preventDefault();
+    let index = parseInt(this.textContent.match(numbers));
+    let searchInputVal = weatherQueryHistoryArray[index - 1].queryLabel;
+    let queryString = "./search-results.html?q=" + searchInputVal;
+    location.assign(queryString);
+  });
+  let tableRowIndexEl = document.createElement("th");
+  tableRowIndexEl.setAttribute("scope", "row");
+  tableRowIndexEl.innerHTML = `${i + 1}`;
+  let locationEl = document.createElement("td");
+  locationEl.innerHTML = weatherQueryHistoryArray[i].queryLabel;
+  let weatherEl = document.createElement("td");
+  weatherEl.innerHTML = convertToIcon(weatherQueryHistoryArray[i].days[0][1]);
+  newTableRowEl.appendChild(tableRowIndexEl);
+  newTableRowEl.appendChild(locationEl);
+  newTableRowEl.appendChild(weatherEl);
+  tableBodyEl.appendChild(newTableRowEl);
+};
+
+
 // FUNCTION: extracts relevant information from our fetch call
 let displayWeather = function (resultObj) {
   let mainContainer = document.getElementById("mainContainer");
@@ -138,7 +164,9 @@ let displayWeather = function (resultObj) {
   date.innerHTML = `${unixToDate(resultObj.daily[0].dt)}`;
 
   let weather = document.createElement("p");
-  weather.innerHTML = `Weather: ${convertToIcon(resultObj.daily[0].weather[0].main)}`;
+  weather.innerHTML = `Weather: ${convertToIcon(
+    resultObj.daily[0].weather[0].main
+  )}`;
 
   let temp = document.createElement("p");
   temp.classList.add("text-dark");
@@ -227,6 +255,7 @@ let displayWeather = function (resultObj) {
   }
   if (!priorQueries.includes(`${label}`)) {
     weatherQueryHistoryArray.push(currentQueryObject);
+    updateSearch();
   }
   localStorage.setItem(
     "weatherQueryHistory",
@@ -235,3 +264,4 @@ let displayWeather = function (resultObj) {
 };
 
 getData();
+
