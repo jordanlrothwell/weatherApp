@@ -1,4 +1,4 @@
-# Weather Forcast
+# Weather Forecast
 
 ## Description
 
